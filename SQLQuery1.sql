@@ -51,13 +51,47 @@ select * from vw_BooksAndAuthors
 
 -- Task 2 --
 
-create procedure usp_AuthorFullName
+create procedure usp_AuthorFullName  --author ad ve soyadina gore axtarir (fullname)
 @Author nvarchar(60)
 as
 select * from vw_BooksAndAuthors
 where @Author = Author 
 
 exec usp_AuthorFullName 'Leo Tolstoy'
+
+-----
+
+create procedure usp_AuthorName --herf kombinasiyasina gore axtarir (like)
+@Name nvarchar(30)
+as
+select * from vw_BooksAndAuthors
+where Author like '%' + @Name + '%'
+
+exec usp_AuthorName 'Tols'
+
+----
+
+create procedure usp_AuthorName2 --ancaq ada gore axtarir
+@Name nvarchar(30)
+as
+select b.Id, b.[Name], b.[PageCount], (a.Name + ' ' + a.Surname) 'Author' from Books as b
+join Authors as a
+on b.AuthorId = a.Id
+where @Name = a.[Name]
+
+exec usp_AuthorName2 'Leo'
+
+----
+
+create procedure usp_AuthorSurname --ancaq soyada gore axtarir
+@Name nvarchar(30)
+as
+select b.Id, b.[Name], b.[PageCount], (a.Name + ' ' + a.Surname) 'Author' from Books as b
+join Authors as a
+on b.AuthorId = a.Id
+where @Name = a.[Surname]
+
+exec usp_AuthorSurname 'Tolstoy'
 
 -- Task 3 --
 
